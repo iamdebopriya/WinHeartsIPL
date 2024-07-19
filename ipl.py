@@ -45,9 +45,9 @@ c3,c4,c5=st.columns(3)
 with c3:
        score=st.number_input('score')
 with c4:
-       overs=st.number_input('overs completed')
+       overs=st.number_input('overs completed(1-19)')
 with c5:
-       wickets=st.number_input('wickets out')
+       wickets=st.number_input('wickets out(0-10)')
 
 if st.button('predict probability'):
    runs_left= target-score
