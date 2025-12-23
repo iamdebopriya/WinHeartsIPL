@@ -3,12 +3,14 @@ import pickle
 from sklearn import pipeline
 import pandas as pd
 
-# Enhanced IPL-themed styling
+# Enhanced IPL-themed styling with better contrast
 page_styling = '''
 <style>
-    /* Main background with gradient */
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Exo+2:wght@400;600;800&display=swap');
+    
+    /* Main background */
     [data-testid="stAppViewContainer"] {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
     }
     
     /* Header styling */
@@ -16,135 +18,140 @@ page_styling = '''
         background-color: rgba(0,0,0,0);
     }
     
-    /* Custom title styling */
+    /* Main title */
     .main-title {
         text-align: center;
-        font-size: 3.5rem;
-        font-weight: 900;
-        background: linear-gradient(120deg, #ff6b6b, #4ecdc4, #ffe66d, #ff6b6b);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shine 3s linear infinite;
-        text-shadow: 0 0 20px rgba(255,107,107,0.5);
+        font-size: 4rem;
+        font-weight: 800;
+        color: #00d9ff;
+        text-shadow: 0 0 30px rgba(0, 217, 255, 0.6), 0 0 60px rgba(0, 217, 255, 0.4);
         margin-bottom: 0.5rem;
-        font-family: 'Arial Black', sans-serif;
-    }
-    
-    @keyframes shine {
-        to {
-            background-position: 200% center;
-        }
+        font-family: 'Rajdhani', sans-serif;
+        letter-spacing: 3px;
     }
     
     .subtitle {
         text-align: center;
-        color: #4ecdc4;
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
+        color: #ffd93d;
+        font-size: 1.4rem;
+        margin-bottom: 3rem;
         font-weight: 600;
+        font-family: 'Exo 2', sans-serif;
     }
     
-    /* Card-like containers */
-    .stSelectbox, .stNumberInput {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        padding: 10px;
-        backdrop-filter: blur(10px);
+    /* Section headers */
+    .section-header {
+        color: #00d9ff;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 2rem 0 1rem 0;
+        font-family: 'Rajdhani', sans-serif;
+        border-bottom: 3px solid #00d9ff;
+        padding-bottom: 0.5rem;
     }
     
-    /* Labels */
+    /* Labels - HIGH CONTRAST */
     label {
-        color: #ffe66d !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
+        color: #ffd93d !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        font-family: 'Exo 2', sans-serif !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     
-    /* Input fields */
+    /* Input fields - DARK BACKGROUND WITH LIGHT TEXT */
     input, select {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        color: white !important;
-        border: 2px solid #4ecdc4 !important;
+        background-color: #1a1f3a !important;
+        color: #ffffff !important;
+        border: 2px solid #00d9ff !important;
         border-radius: 8px !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        padding: 0.5rem !important;
+    }
+    
+    input:focus, select:focus {
+        border-color: #ffd93d !important;
+        box-shadow: 0 0 15px rgba(255, 217, 61, 0.4) !important;
+    }
+    
+    /* Dropdown arrow visibility */
+    select option {
+        background-color: #1a1f3a !important;
+        color: #ffffff !important;
+    }
+    
+    /* Number input buttons */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        opacity: 1;
     }
     
     /* Button styling */
     .stButton button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-size: 1.3rem;
-        font-weight: bold;
-        padding: 0.8rem 2rem;
+        background: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 800;
+        padding: 1rem 3rem;
         border-radius: 50px;
         border: none;
         width: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 10px 40px rgba(255, 0, 110, 0.5);
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
+        font-family: 'Rajdhani', sans-serif;
+        margin-top: 2rem;
     }
     
     .stButton button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(255, 0, 110, 0.7);
     }
     
     /* Table styling */
     .stDataFrame {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        padding: 15px;
-        backdrop-filter: blur(10px);
+        background-color: rgba(26, 31, 58, 0.8);
+        border-radius: 15px;
+        padding: 20px;
+        border: 2px solid #00d9ff;
     }
     
-    /* Header results */
+    /* DataFrame text */
+    [data-testid="stDataFrame"] {
+        color: #ffffff !important;
+    }
+    
+    /* Headers */
     h1, h2, h3 {
-        color: white !important;
+        color: #00d9ff !important;
+        font-family: 'Rajdhani', sans-serif !important;
     }
     
-    /* Custom result cards */
-    .result-card {
-        background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,107,107,0.05));
-        border-left: 5px solid #ff6b6b;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        backdrop-filter: blur(10px);
-    }
-    
-    .result-card h2 {
-        margin: 0;
-        font-size: 2rem;
-        font-weight: 900;
-    }
-    
-    /* Section divider */
+    /* Divider */
     hr {
         border: none;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #00d9ff, #ffd93d, #ff006e, transparent);
         margin: 2rem 0;
     }
     
-    /* Cricket ball emoji animation */
-    .cricket-emoji {
-        text-align: center;
-        font-size: 3rem;
-        animation: bounce 2s infinite;
-    }
-    
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
+    /* Column containers */
+    [data-testid="column"] {
+        background-color: rgba(26, 31, 58, 0.4);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(0, 217, 255, 0.3);
     }
 </style>
 '''
 
 st.markdown(page_styling, unsafe_allow_html=True)
 
-# Title with IPL vibe
-st.markdown('<h1 class="main-title">WinHeartsIPL</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">IPL Win Probability Predictor</p>', unsafe_allow_html=True)
+# Title
+st.markdown('<h1 class="main-title">WINHEARTSІPL</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Live Match Win Probability Engine</p>', unsafe_allow_html=True)
 
 teams = ['Royal Challengers Bangalore', 'Mumbai Indians',
          'Kolkata Knight Riders', 'Chennai Super Kings',
@@ -161,33 +168,32 @@ cities = ['Bangalore', 'Mumbai', 'Kolkata', 'Hyderabad', 'Chennai', 'Delhi',
 
 pipe = pickle.load(open('pipe2.pkl', 'rb'))
 
-st.markdown("---")
-st.markdown("### 🎯 Match Setup")
+st.markdown('<p class="section-header">TEAM SELECTION</p>', unsafe_allow_html=True)
 
 c1, c2 = st.columns(2)
 with c1:
-    batting_team = st.selectbox('Select the batting team', sorted(teams))
+    batting_team = st.selectbox('Batting Team', sorted(teams), key='batting')
 with c2:
-    bowling_team = st.selectbox('Select the bowling team', sorted(teams))
+    bowling_team = st.selectbox('Bowling Team', sorted(teams), key='bowling')
 
-selected_city = st.selectbox('Select the host city', sorted(cities))
+selected_city = st.selectbox('Host City', sorted(cities), key='city')
 
 st.markdown("---")
-st.markdown("### 📊 Match Stats")
+st.markdown('<p class="section-header">MATCH SITUATION</p>', unsafe_allow_html=True)
 
-target = st.number_input('Target', min_value=0, step=1)
+target = st.number_input('Target Score', min_value=0, step=1, key='target')
 
 c3, c4, c5 = st.columns(3)
 with c3:
-    score = st.number_input('Score', min_value=0, step=1)
+    score = st.number_input('Current Score', min_value=0, step=1, key='score')
 with c4:
-    overs = st.number_input('Overs completed (1-19)', min_value=0.0, max_value=19.0, step=0.1)
+    overs = st.number_input('Overs Completed', min_value=0.0, max_value=19.0, step=0.1, key='overs')
 with c5:
-    wickets = st.number_input('Wickets out (0-10)', min_value=0, max_value=10, step=1)
+    wickets = st.number_input('Wickets Lost', min_value=0, max_value=10, step=1, key='wickets')
 
 st.markdown("---")
 
-if st.button('🔮 PREDICT PROBABILITY'):
+if st.button('CALCULATE WIN PROBABILITY'):
     runs_left = target - score
     balls_left = 120 - (overs * 6)
     wickets_remaining = 10 - wickets
@@ -206,7 +212,7 @@ if st.button('🔮 PREDICT PROBABILITY'):
         'rrr': [rrr]
     })
     
-    st.markdown("### 📋 Match Analysis")
+    st.markdown('<p class="section-header">MATCH ANALYSIS</p>', unsafe_allow_html=True)
     st.dataframe(input_df, use_container_width=True)
     
     result = pipe.predict_proba(input_df)
@@ -214,34 +220,42 @@ if st.button('🔮 PREDICT PROBABILITY'):
     win = result[0][1]
     
     st.markdown("---")
-    st.markdown("### 🏆 Win Probability")
+    st.markdown('<p class="section-header">WIN PROBABILITY</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown(f"""
-        <div style="background: linear-gradient(135deg, rgba(78,205,196,0.3), rgba(78,205,196,0.1)); 
-                    border-left: 5px solid #4ecdc4; padding: 1.5rem; border-radius: 10px; 
-                    text-align: center; backdrop-filter: blur(10px);">
-            <h3 style="color: #4ecdc4; margin: 0;">🎯 {batting_team}</h3>
-            <h1 style="color: #ffe66d; font-size: 3rem; margin: 10px 0; font-weight: 900;">
+        <div style="background: linear-gradient(135deg, #00d9ff 0%, #0096c7 100%); 
+                    padding: 2rem; border-radius: 15px; 
+                    text-align: center; box-shadow: 0 10px 40px rgba(0, 217, 255, 0.4);
+                    border: 3px solid #00d9ff;">
+            <h3 style="color: #0a0e27; margin: 0; font-weight: 800; font-size: 1.3rem;">
+                {batting_team}
+            </h3>
+            <h1 style="color: #ffffff; font-size: 4rem; margin: 15px 0; font-weight: 900; text-shadow: 0 4px 8px rgba(0,0,0,0.3);">
                 {round(win * 100)}%
             </h1>
+            <p style="color: #0a0e27; margin: 0; font-weight: 700; font-size: 1rem;">WIN CHANCE</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style="background: linear-gradient(135deg, rgba(255,107,107,0.3), rgba(255,107,107,0.1)); 
-                    border-left: 5px solid #ff6b6b; padding: 1.5rem; border-radius: 10px; 
-                    text-align: center; backdrop-filter: blur(10px);">
-            <h3 style="color: #ff6b6b; margin: 0;">🛡️ {bowling_team}</h3>
-            <h1 style="color: #ffe66d; font-size: 3rem; margin: 10px 0; font-weight: 900;">
+        <div style="background: linear-gradient(135deg, #ff006e 0%, #d00060 100%); 
+                    padding: 2rem; border-radius: 15px; 
+                    text-align: center; box-shadow: 0 10px 40px rgba(255, 0, 110, 0.4);
+                    border: 3px solid #ff006e;">
+            <h3 style="color: #ffffff; margin: 0; font-weight: 800; font-size: 1.3rem;">
+                {bowling_team}
+            </h3>
+            <h1 style="color: #ffffff; font-size: 4rem; margin: 15px 0; font-weight: 900; text-shadow: 0 4px 8px rgba(0,0,0,0.3);">
                 {round(loss * 100)}%
             </h1>
+            <p style="color: #ffffff; margin: 0; font-weight: 700; font-size: 1rem;">WIN CHANCE</p>
         </div>
         """, unsafe_allow_html=True)
     
-    # Progress bar for visual representation
-    st.markdown("### 📈 Probability Distribution")
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown('<p class="section-header">PROBABILITY METER</p>', unsafe_allow_html=True)
     st.progress(win)
